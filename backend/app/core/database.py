@@ -4,6 +4,7 @@ Database Configuration and Session Management
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import MetaData
+import ssl
 
 from app.core.config import settings
 
