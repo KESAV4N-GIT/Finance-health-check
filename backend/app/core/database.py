@@ -7,7 +7,7 @@ from sqlalchemy import MetaData
 
 from app.core.config import settings
 
-
+import ssl
 # Naming convention for constraints (helps with migrations)
 convention = {
     "ix": "ix_%(column_0_label)s",
@@ -36,13 +36,18 @@ if database_url.startswith("sqlite://"):
     )
 elif database_url.startswith("postgresql://"):
     database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+    ssl_context = ssl.create_default_context()
+
     engine = create_async_engine(
         database_url,
         echo=settings.DEBUG,
         pool_size=5,
         max_overflow=10,
         pool_pre_ping=True,
+        connect_args={"ssl": ssl_context},
     )
+
 else:
     engine = create_async_engine(
         database_url,
